@@ -12,3 +12,8 @@ Cargo.lock
 debug/
 target/
 .vscode/
+serv
+xiu
+.env
+config.toml
+
