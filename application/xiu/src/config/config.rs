@@ -70,7 +70,7 @@ fn test_toml_parse() {
     //     Err(err) => print!("{}\n", err),
     // }
 
-    let str = fs::read_to_string("/Users/zexu/github/xiu/application/src/config/config.toml");
+    let str = fs::read_to_string("./config.toml");
 
     match str {
         Ok(val) => {

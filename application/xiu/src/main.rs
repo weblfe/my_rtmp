@@ -75,7 +75,7 @@ pub struct Service {
 
 impl Service {
     pub fn new(cfg: Config) -> Self {
-        Service { cfg: cfg }
+        Service { cfg }
     }
 
     async fn run(&mut self) -> Result<()> {
