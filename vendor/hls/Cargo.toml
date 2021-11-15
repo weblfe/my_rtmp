@@ -13,7 +13,7 @@
 [package]
 edition = "2018"
 name = "hls"
-version = "0.0.4"
+version = "0.0.5"
 authors = ["HarlanC <wawacry@qq.com"]
 description = "hls library."
 readme = "README.md"
@@ -38,7 +38,7 @@ features = ["full"]
 version = "0.4"
 
 [dependencies.rtmp]
-version = "0.0.8"
+version = "0.0.9"
 
 [dependencies.tokio]
 version = "1.4.0"
@@ -54,7 +54,7 @@ version = "0.6.5"
 features = ["v4"]
 
 [dependencies.xflv]
-version = "0.0.1"
+version = "0.0.2"
 
 [dependencies.xmpegts]
-version = "0.0.2"
+version = "0.0.3"

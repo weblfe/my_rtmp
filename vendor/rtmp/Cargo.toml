@@ -13,7 +13,7 @@
 [package]
 edition = "2018"
 name = "rtmp"
-version = "0.0.8"
+version = "0.0.9"
 authors = ["HarlanC <wawacry@qq.com"]
 description = "rtmp library."
 readme = "README.md"
@@ -28,7 +28,7 @@ version = "1.4.2"
 version = "1.0.0"
 
 [dependencies.bytesio]
-version = "0.1.26"
+version = "0.1.27"
 
 [dependencies.chrono]
 version = "0.4"
@@ -62,4 +62,4 @@ version = "0.6.5"
 features = ["v4"]
 
 [dependencies.xflv]
-version = "0.0.1"
+version = "0.0.2"

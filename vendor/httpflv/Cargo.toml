@@ -13,7 +13,7 @@
 [package]
 edition = "2018"
 name = "httpflv"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["HarlanC <wawacry@qq.com"]
 description = "httpflv library."
 readme = "README.md"
@@ -41,7 +41,7 @@ features = ["full"]
 version = "0.4"
 
 [dependencies.rtmp]
-version = "0.0.8"
+version = "0.0.9"
 
 [dependencies.tokio]
 version = "1.4.0"
@@ -53,4 +53,4 @@ version = "0.6.5"
 features = ["v4"]
 
 [dependencies.xflv]
-version = "0.0.1"
+version = "0.0.2"

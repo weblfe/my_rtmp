@@ -106,6 +106,15 @@ impl Transmiter {
                                                 value: ChannelErrorValue::SendError,
                                             })?;
                                         }
+
+                                        let gop = self.cache.lock().unwrap().clone().get_gop_data();
+                                        if let Some(gop_data) = gop{
+                                            for channel_data in gop_data{
+                                                sender.send(channel_data).map_err(|_| ChannelError {
+                                                    value: ChannelErrorValue::SendError,
+                                                })?;
+                                            }
+                                        }
                                      }
                                     SessionSubType::Publisher =>{
 
@@ -225,7 +234,7 @@ impl ChannelsManager {
         self.event_loop().await;
     }
 
-    pub fn set_push_enabled(&mut self, enabled: bool) {
+    pub fn set_rtmp_push_enabled(&mut self, enabled: bool) {
         self.push_enabled = enabled;
     }
 
@@ -233,7 +242,7 @@ impl ChannelsManager {
         self.hls_enabled = enabled;
     }
 
-    pub fn set_pull_enabled(&mut self, enabled: bool) {
+    pub fn set_rtmp_pull_enabled(&mut self, enabled: bool) {
         self.pull_enabled = enabled;
     }
 
@@ -302,8 +311,6 @@ impl ChannelsManager {
         }
     }
 
-    pub async fn data_loop(&mut self) {}
-
     //player subscribe a stream
     pub async fn subscribe(
         &mut self,
@@ -319,7 +326,7 @@ impl ChannelsManager {
                     responder: sender,
                     session_info,
                 };
-                
+
                 producer.send(event).map_err(|_| ChannelError {
                     value: ChannelErrorValue::SendError,
                 })?;
@@ -491,9 +498,6 @@ impl ChannelsManager {
 
         Ok(())
     }
-
-    //server broadcast data to player
-    pub fn broadcast() {}
 }
 
 #[cfg(test)]

@@ -13,7 +13,7 @@
 [package]
 edition = "2018"
 name = "bytesio"
-version = "0.1.26"
+version = "0.1.27"
 authors = ["HarlanC <wawacry@qq.com>"]
 description = "a network io library using tokio."
 license = "MIT"
