@@ -7,61 +7,64 @@
 ![wechat](https://img.shields.io/:微信-harlancc-blue.svg)
 ![qqgroup](https://img.shields.io/:QQ群-24893069-blue.svg)
 
-[中文文档](https://github.com/harlanc/xiu/blob/master/README_CN.md)
 
-Xiu is a simple and secure live server written by pure Rust, it now supports popular live protocols like RTMP/HLS/HTTPFLV (and maybe other protocols in the future), you can deploy it as a stand-alone server or a cluster using relay feature.
+Xiu是用纯rust开发的一款简单和安全的流媒体服务器，目前支持流行的流媒体协议包括RTMP/HLS/HTTPFLV（将来有可能支持其它协议），可以单点部署，也可以用relay功能来部署集群。
 
-## Features
+## 功能
 
 - [x] RTMP
-  - [x] publish and play 
-  - [x] relay: static push
-  - [x] relay: static pull
+  - [x] 发布直播流和播放直播流
+  - [x] 转发：静态转推和静态回源
 - [x] HTTPFLV
 - [x] HLS
 - [ ] SRT
 
 
-## Preparation
-#### Install Rust and Cargo
+## 准备工作
+#### 安装 Rust and Cargo
+
 
 [Document](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 
-## Install and run 
+## 安装和运行
 
-There are two ways to install xiu :
+有两种方式来安装xiu：
  
- - Using cargo to install
- - Building from source
+ - 直接用cargo来安装
+ - 源码编译安装
 
 
-### Install using cargo
+### 用cargo命令安装
 
-Issue the following command to install xiu:
+执行下面的命令来安转xiu:
 
     cargo install xiu
-Start the service with the following command:
+    
+执行下面的命令来启动服务:
 
     xiu configuration_file_path/confit.toml
     
-### Build from souce
+### 源码编译安装
 
-#### Clone Xiu
+#### 克隆 Xiu
 
     git clone https://github.com/harlanc/xiu.git
+ Checkout最新发布的版本代码：
+ 
+        git checkout tags/<tag_name> -b <branch_name>
     
-use master branch
+
     
-#### Build
+#### 编译
 
     cd ./xiu/application/xiu
     cargo build --release
-#### Run
+#### 运行
 
     cd ./xiu/target/release
     ./xiu config.toml
     
-## Configurations
+## 配置
 
 ##### RTMP
     [rtmp]
@@ -107,31 +110,28 @@ use master branch
     
 
     
-## Scenarios
+## 应用场景
 
-##### Push
+##### 推流
 
-You can use two ways:
+可以用任何推流软件或者命令工具来推RTMP流，比如使用OBS或者用ffmpeg命令行：
 
-- Use OBS to push a live rtmp stream
-- Or use FFmpeg to push a rtmp stream:
-     
-        ffmpeg -re -stream_loop -1 -i test.mp4 -c:a copy -c:v copy -f flv -flvflags no_duration_filesize rtmp://127.0.0.1:1935/live/test110
+    ffmpeg -re -stream_loop -1 -i test.mp4 -c:a copy -c:v copy -f flv -flvflags no_duration_filesize rtmp://127.0.0.1:1935/live/test110
 
 
-##### Play
+##### 播放
 
-Use ffplay to play the rtmp/httpflv/hls live stream:
+使用ffplay来播放 rtmp/httpflv/hls协议的直播流:
 
     ffplay -i rtmp://localhost:1935/live/test
     ffplay -i http://localhost:8081/live/test.flv
     ffplay -i http://localhost:8080/live/test/test.m3u8
     
-##### Relay - Static push
+##### 转发 - 静态转推
 
-The configuration files are as follows:
+应用场景为边缘节点的直播流被转推到源站，配置如下：
 
-The configuration file of Service 1 named config.toml:
+边缘节点的配置文件config_push.toml:
 
     [rtmp]
     enabled = true
@@ -141,37 +141,36 @@ The configuration file of Service 1 named config.toml:
     address = "localhost"
     port = 1936
     
-The configuration file of Service 2 named config_push.toml:
+源站节点的配置文件config.toml:
 
     [rtmp]
     enabled = true
     port = 1936
 
-Run the 2 services:
+启动两个服务:
 
     ./xiu config.toml
     ./xiu config_push.toml
 
-
-Use the above methods to push rtmp live stream to service 1, then the stream can be pushed to service 2 automatically, you can play the same live stream from both the two services:
+将一路RTMP直播流推送到边缘节点，此直播流会被自动转推到源站，可以同时播放源站或者边缘节点的直播流：
 
     ffplay -i rtmp://localhost:1935/live/test
     ffplay -i rtmp://localhost:1936/live/test
 
 
     
-##### Relay - Static pull
+##### 转发 - 静态回源
 
-The configuration file are as follows:
+应用场景为播放过程中用户从边缘节点拉流，边缘节点无此流，则回源拉流，配置文件如下：
 
-The configuration file of Service 1 named config.toml:
+源站节点的配置文件为 config.toml:
 
     [rtmp]
     enabled = true
     port = 1935
 
  
-The configuration file of Service 2 named config_pull.toml:
+边缘节点的配置文件为 config_pull.toml:
 
     [rtmp]
     enabled = true
@@ -181,24 +180,25 @@ The configuration file of Service 2 named config_pull.toml:
     address = "localhost"
     port = 1935
 
-Run the 2 services:
+运行两个服务:
 
     ./xiu config.toml
     ./xiu config_pull.toml
-
-Use the above methods to push live stream to service 1, when you play the stream from serivce 2, it will pull the stream from service 1:
+    
+直接将直播流推送到源站，到边缘节点请求此路直播流，边缘节点会回源拉流，可以同时播放边缘和源站节点上的直播流：
 
     ffplay -i rtmp://localhost:1935/live/test
     ffplay -i rtmp://localhost:1936/live/test
+    
 ## Star History
 
 [link](https://star-history.t9t.io/#harlanc/xiu)
 
-## Thanks
+## 鸣谢
 
  - [media_server](https://github.com/ireader/media-server.git)
 
-## Others
+## 其它
 
-Open issues if you have any problems. Star and pull requests are welcomed.
+有任何问题请在issues提问，欢迎star和提pull request。微信号：harlancc
  
